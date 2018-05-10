@@ -16,6 +16,12 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        dici:{
+            default :null,
+            type:cc.Prefab
+        },
+        dici_duration :140,
+        diciCount:0,
 
         jumpDuration: 0,
         ittleJumpDuration: 0,
@@ -27,8 +33,8 @@ cc.Class({
 
     moveToRight: function () {
         var goRight  = cc.moveTo(this.jumpDuration, cc.p(this.node.width / 2 - this.wallWidth, this.player.getPositionY()));
-        var goR1  = cc.moveTo(this.jumpDuration, cc.p(this.node.width / 2 - this.wallWidth-this.littleJumpHeight, this.player.getPositionY()));
-        var goR2  = cc.moveTo(this.jumpDuration, cc.p(this.node.width / 2 - this.wallWidth, this.player.getPositionY()));
+        var goR1  = cc.moveTo(this.jumpDuration/2, cc.p(this.node.width / 2 - this.wallWidth-this.littleJumpHeight, this.player.getPositionY()));
+        var goR2  = cc.moveTo(this.jumpDuration/2, cc.p(this.node.width / 2 - this.wallWidth, this.player.getPositionY()));
         var sequence = cc.sequence(goR1,goR2);
         if ( this.player.rotationY === 180) {
             //朝向右边
@@ -44,8 +50,8 @@ cc.Class({
     moveToLeft: function () {
 
         var goLeft  = cc.moveTo(this.jumpDuration, cc.p(-this.node.width / 2 + this.wallWidth, this.player.getPositionY()));
-        var goL1  = cc.moveTo(this.jumpDuration, cc.p(-this.node.width / 2 + this.wallWidth+this.littleJumpHeight, this.player.getPositionY()));
-        var goL2  = cc.moveTo(this.jumpDuration, cc.p(-this.node.width / 2 + this.wallWidth, this.player.getPositionY()));
+        var goL1  = cc.moveTo(this.jumpDuration/2, cc.p(-this.node.width / 2 + this.wallWidth+this.littleJumpHeight, this.player.getPositionY()));
+        var goL2  = cc.moveTo(this.jumpDuration/2, cc.p(-this.node.width / 2 + this.wallWidth, this.player.getPositionY()));
         var sequence = cc.sequence(goL1,goL2);
 
         if ( this.player.rotationY === 0) {
@@ -59,8 +65,14 @@ cc.Class({
 
     },
     touchstart: function (event) {
-        // cc.log(this.pressed);
-
+        // // cc.log(this.pressed);
+        // var playerP = this.player.convertToWorldSpaceAR(this.player.getPosition());
+        // if ( this.player.rotationY === 0) {
+        //     //朝向右边
+        //     var playerX =  playerP.x- this.wallWidth;
+        // }else{
+        //     var playerX =  playerP.x- this.wallWidth;
+        // }
         if (!com.pressed) {
             com.pressed = true;
             cc.log(com.pressed );
@@ -77,6 +89,14 @@ cc.Class({
                 this.moveToLeft();
             }
         }
+      
+    //    var leftX = -this.node.width / 2 + this.wallWidth;
+    //    var rightX =this.node.width / 2 - this.wallWidth;
+    //     if(playerX===leftX||playerX===rightX){
+           
+    //     }
+
+       
 
     },
     touchend: function (event) {
@@ -90,6 +110,44 @@ cc.Class({
 
     onLoad() {
         this.setInputControl();
+        this.schedule(function(){
+            this.newDici();
+        },0.3);
+       
+    },
+    newDici: function(){
+        this.diciCount+=1;
+        var diciNew = cc.instantiate(this.dici);
+        this.node.addChild(diciNew);
+        //把main组件的示例传入星星组件
+        diciNew.getComponent('Dici').main = this;
+        // newStar.getComponent('Star').game = this;
+        //设置位置 随机生成到左边或者右边
+        var random =   cc.random0To1();
+        if (random>0.5) {
+            //右边
+            diciNew.rotationY = 0;
+        }else{
+            //左边
+            diciNew.rotationY = 180;
+        }
+        diciNew.setPosition(this.diciPosition(random));
+    },
+    diciPosition:function (random) {
+        var randX=0;
+        var randY=0;
+        if(random>=0.5){
+           randX=this.node.width/2- this.wallWidth;
+        }else{
+           randX =-this.node.width/2+this.wallWidth;
+        }
+        if(this.diciCount<=15){
+            randY=(this.node.height/2)-(this.dici_duration*this.diciCount)-this.dici_duration*1;
+        }else{
+            randY=(this.node.height/2)-(this.dici_duration*15)-this.dici_duration*1;
+        }
+        
+        return cc.p(randX,randY);
     },
 
     start() {

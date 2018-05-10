@@ -12,6 +12,10 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
+        main:{
+            default: null,
+            serializable: false
+        },
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching
@@ -37,5 +41,9 @@ cc.Class({
 
     },
 
-    // update (dt) {},
+    update (dt) {
+        var goAction = cc.moveBy(0.2, cc.p(0, 20));
+        this.node.runAction(goAction);
+
+    },
 });

@@ -198,6 +198,11 @@
     "player": {
       "__id__": 6
     },
+    "dici": {
+      "__uuid__": "66eb0894-7d70-412c-aee2-463701fcbb64"
+    },
+    "dici_duration": 140,
+    "diciCount": 0,
     "jumpDuration": 0.2,
     "ittleJumpDuration": 0.1,
     "wallWidth": 120,
@@ -206,7 +211,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "normal",
+    "_name": "player",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -249,7 +254,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -416,
+      "x": -420,
       "y": 633
     },
     "_skewX": 0,
