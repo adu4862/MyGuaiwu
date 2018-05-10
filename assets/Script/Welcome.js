@@ -7,16 +7,11 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
-var com = require('Common');
+
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        main:{
-            default: null,
-            serializable: false
-        },
-        minRadius :50,
         // foo: {
         //     // ATTRIBUTES:
         //     default: null,        // The default value will be used only when the component attaching
@@ -36,28 +31,17 @@ cc.Class({
 
     // LIFE-CYCLE CALLBACKS:
 
-    getPlayerPos: function () {
-        var position = this.main.player.getPosition();
-        return cc.pDistance(this.node.getPosition(), position);
+    onLoad () {
+        var touchReceiver = cc.Canvas.instance.node;
+        touchReceiver.on(cc.Node.EventType.TOUCH_START, this.touchstart, this);
     },
-    // onLoad () {},
+    touchstart: function (event) {
+        cc.director.loadScene("MainScene");
+    },
 
     start () {
 
-
     },
 
-    update (dt) {
-        var goAction = cc.moveBy(0.8, cc.p(0, 20));
-        this.node.runAction(goAction);
-        if (this.getPlayerPos()<this.minRadius) {
-            //触碰到地刺
-            cc.log('游戏结束');
-            cc.director.loadScene("EndScene");
-
-            com.score = this.main.score;
-            return;
-        }
-
-    },
+    // update (dt) {},
 });

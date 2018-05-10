@@ -1,5 +1,6 @@
 module.exports = {
 
-    pressed : false
+    pressed : false,
+    score:0,
 
 };

@@ -20,7 +20,7 @@ cc.Class({
             default :null,
             type:cc.Prefab
         },
-        dici_duration :140,
+        dici_duration :240,
         diciCount:0,
 
         jumpDuration: 0,
@@ -28,6 +28,12 @@ cc.Class({
         wallWidth: 0,
         littleJumpHeight: 0,
         pressed :false,
+        score:0,
+        scoreLabel:{
+            default:null,
+            type:cc.Label,
+
+        },
 
     },
 
@@ -112,6 +118,8 @@ cc.Class({
         this.setInputControl();
         this.schedule(function(){
             this.newDici();
+            this.score +=1;
+            this.scoreLabel.string = 'Score : ' + this.score;
         },0.3);
        
     },
@@ -141,11 +149,12 @@ cc.Class({
         }else{
            randX =-this.node.width/2+this.wallWidth;
         }
-        if(this.diciCount<=15){
-            randY=(this.node.height/2)-(this.dici_duration*this.diciCount)-this.dici_duration*1;
-        }else{
-            randY=(this.node.height/2)-(this.dici_duration*15)-this.dici_duration*1;
-        }
+        randY=(-this.node.height/2);
+        // if(this.diciCount<=15){
+        //     randY=(this.node.height/2)-(this.dici_duration*this.diciCount)-this.dici_duration*1;
+        // }else{
+        //     randY=(this.node.height/2)-(this.dici_duration*15)-this.dici_duration*1;
+        // }
         
         return cc.p(randX,randY);
     },
@@ -154,5 +163,8 @@ cc.Class({
 
     },
 
-    // update (dt) {},
+    update (dt) {
+
+
+    },
 });
